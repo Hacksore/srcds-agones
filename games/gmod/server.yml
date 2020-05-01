@@ -1,0 +1,30 @@
+apiVersion: "agones.dev/v1"
+kind: GameServer
+metadata:
+  generateName: gmod-
+spec:
+  ports:
+    - name: default
+      portPolicy: Dynamic
+      containerPort: 27015
+  health:
+    disabled: false
+    initialDelaySeconds: 30
+    periodSeconds: 35
+  template:
+    spec:
+      imagePullSecrets:
+        - name: gcr-token
+      containers:
+        - name: gmod
+          image: gcr.io/sandbox-275801/gmod
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "20m"
+            limits:
+              memory: "128Mi"
+              cpu: "20m"
