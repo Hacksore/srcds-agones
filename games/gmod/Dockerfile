@@ -53,18 +53,22 @@ ENV SRCDS_FPSMAX=300 \
   HOSTNAME="Powerd by agones™" \
   SRCDS_STARTMAP="gm_flatgrass"
 
-# install curl for agones sdk interaction 
-RUN apt-get update && apt-get install curl -y
+# install git and go so we can build dsg-wrapper
+RUN apt-get update && apt-get install git golang-go -y
 
 ADD start.sh $STEAMAPPDIR
 RUN chmod +x $STEAMAPPDIR/start.sh
 
-USER steam
+# setup the wrapper util
+WORKDIR /tmp
+RUN git clone https://github.com/Hacksore/dsg-wrapper.git
+RUN go get agones.dev/agones/sdks/go
+RUN cd /tmp/dsg-wrapper && go build
+RUN cp /tmp/dsg-wrapper/dsg-wrapper $STEAMAPPDIR/dsg-wrapper
+RUN chmod +x $STEAMAPPDIR/dsg-wrapper
+
 VOLUME $STEAMAPPDIR
 WORKDIR $STEAMAPPDIR
+USER steam
 
-
-ENTRYPOINT ["./start.sh"]
-
-# Does agones need this?
-EXPOSE 27015/tcp 27015/udp
+ENTRYPOINT $STEAMAPPDIR/dsg-wrapper -i $STEAMAPPDIR/start.sh -s "VAC secure mode"

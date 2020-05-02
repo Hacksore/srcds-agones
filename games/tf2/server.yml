@@ -1,7 +1,7 @@
 apiVersion: "agones.dev/v1"
 kind: GameServer
 metadata:
-  generateName: gmod-
+  generateName: tf2-
 spec:
   ports:
     - name: default
@@ -15,14 +15,14 @@ spec:
     spec:
       containers:
         - name: gmod
-          image: gcr.io/sandbox-275801/gmod
+          image: gcr.io/sandbox-275801/tf2
           imagePullPolicy: Always
           stdin: true
           tty: true
           resources:
             requests:
-              memory: "1Gi"
-              cpu: 500m
+              memory: "512Mi"
+              cpu: "20m"
             limits:
-              memory: "1Gi"
-              cpu: 500m
+              memory: "1G"
+              cpu: "20m"

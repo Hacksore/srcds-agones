@@ -1,0 +1,21 @@
+# was using for to ensure worked on k8s without agones ;)
+apiVersion: "v1"
+kind: Pod
+metadata:
+  generateName: gmod-pod-
+spec:
+  hostNetwork: true
+  restartPolicy: Never
+  containers:
+    - name: gmod
+      image: gcr.io/sandbox-275801/gmod
+      imagePullPolicy: Always
+      stdin: true
+      tty: true
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: 500m
+        limits:
+          memory: "1Gi"
+          cpu: 500m
