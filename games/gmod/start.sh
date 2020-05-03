@@ -9,4 +9,4 @@ ${STEAMAPPDIR}/srcds_run \
   -maxplayers $SRCDS_MAXPLAYERS \
   +map $SRCDS_STARTMAP \
   +sv_setsteamaccount $SRCDS_TOKEN \
-  +hostname "$HOSTNAME"
+  +hostname "$HOSTNAME" 2>&1 

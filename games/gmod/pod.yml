@@ -1,5 +1,5 @@
 # was using for to ensure worked on k8s without agones ;)
-apiVersion: "v1"
+apiVersion: v1
 kind: Pod
 metadata:
   generateName: gmod-pod-
@@ -14,7 +14,9 @@ spec:
       tty: true
       env:
       - name: SKIP_AGONES
-        value: true
+        value: "true"
+      - name: DEBUG
+        value: "true"
       resources:
         requests:
           memory: "1Gi"
