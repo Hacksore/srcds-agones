@@ -54,7 +54,7 @@ ENV SRCDS_FPSMAX=300 \
   SRCDS_STARTMAP="gm_flatgrass"
 
 # install git and go so we can build dsg-wrapper
-RUN apt-get update && apt-get install git golang-go -y
+RUN apt-get update && apt-get install git golang-go curl -y
 
 ADD start.sh $STEAMAPPDIR
 RUN chmod +x $STEAMAPPDIR/start.sh
@@ -62,7 +62,6 @@ RUN chmod +x $STEAMAPPDIR/start.sh
 # setup the wrapper util
 WORKDIR /tmp
 RUN git clone https://github.com/Hacksore/dsg-wrapper.git
-RUN go get agones.dev/agones/sdks/go
 RUN cd /tmp/dsg-wrapper && go build
 RUN cp /tmp/dsg-wrapper/dsg-wrapper $STEAMAPPDIR/dsg-wrapper
 RUN chmod +x $STEAMAPPDIR/dsg-wrapper

@@ -12,6 +12,9 @@ spec:
       imagePullPolicy: Always
       stdin: true
       tty: true
+      env:
+      - name: SKIP_AGONES
+        value: true
       resources:
         requests:
           memory: "1Gi"
