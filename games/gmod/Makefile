@@ -1,6 +1,8 @@
 build:
-	docker build -t gcr.io/sandbox-275801/gmod .
+	docker build -t seanboult/gmod .
 build-thick:
-	docker build --no-cache -t gcr.io/sandbox-275801/gmod .
+	docker build --no-cache -t seanboult/gmod .
 push:
-	docker push gcr.io/sandbox-275801/gmod
+	docker push seanboult/gmod
+rebuild:
+	$(MAKE) build && $(MAKE) push

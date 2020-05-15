@@ -8,15 +8,15 @@ spec:
   restartPolicy: Never
   containers:
     - name: gmod
-      image: gcr.io/sandbox-275801/gmod
+      image: seanboult/gmod
       imagePullPolicy: Always
       stdin: true
       tty: true
       env:
-      - name: SKIP_AGONES
-        value: "true"
-      - name: DEBUG
-        value: "true"
+        - name: SKIP_AGONES
+          value: "true"
+        - name: DEBUG
+          value: "true"
       resources:
         requests:
           memory: "1Gi"

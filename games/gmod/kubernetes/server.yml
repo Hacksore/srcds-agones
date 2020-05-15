@@ -5,8 +5,7 @@ metadata:
 spec:
   ports:
     - name: default
-      portPolicy: Dynamic
-      containerPort: 27015
+      portPolicy: Passthrough
   health:
     initialDelaySeconds: 30
     periodSeconds: 35
@@ -14,7 +13,7 @@ spec:
     spec:
       containers:
         - name: gmod
-          image: gcr.io/sandbox-275801/gmod
+          image: seanboult/gmod
           imagePullPolicy: Always
           stdin: true
           tty: true

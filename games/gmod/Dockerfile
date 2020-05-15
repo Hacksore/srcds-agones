@@ -44,20 +44,17 @@ RUN set -x \
   && apt-get autoremove -y \
   && rm -rf /var/lib/apt/lists/*
 
-ENV SRCDS_FPSMAX=300 \
-  SRCDS_PORT=27015 \
-  SRCDS_MAXPLAYERS=16 \
-  SRCDS_TOKEN=${SRCDS_TOKEN} \
-  SRCDS_RCONPW="changeme" \
-  SRCDS_PW="changeme" \
-  HOSTNAME="Powerd by agones™" \
-  SRCDS_STARTMAP="gm_flatgrass"
+ENV SRCDS_FPSMAX=300
+ENV SRCDS_PORT=27015
+ENV SRCDS_MAXPLAYERS=16
+ENV SRCDS_TOKEN=${SRCDS_TOKEN}
+ENV SRCDS_RCONPW='changeme'
+ENV SRCDS_PW='changeme'
+ENV HOSTNAME='Powerd by agones™'
+ENV SRCDS_STARTMAP='gm_flatgrass'
 
 # install git and go so we can build dsg-wrapper
 RUN apt-get update && apt-get install git golang-go curl -y
-
-ADD start.sh $STEAMAPPDIR
-RUN chmod +x $STEAMAPPDIR/start.sh
 
 # setup the wrapper util
 WORKDIR /tmp
@@ -66,8 +63,22 @@ RUN cd /tmp/dsg-wrapper && go build
 RUN cp /tmp/dsg-wrapper/dsg-wrapper $STEAMAPPDIR/dsg-wrapper
 RUN chmod +x $STEAMAPPDIR/dsg-wrapper
 
+# add start script
+ADD start.sh $STEAMAPPDIR
+RUN chmod +x $STEAMAPPDIR/start.sh
+
+# add code for gamemodes
+RUN git clone -b agones-support https://github.com/Hacksore/minigames_v2.git $STEAMAPPDIR/gamemodes
+
+# add config
+ADD server.cfg $STEAMAPPDIR/garrysmod/cfg/server.cfg
+
+# make game user own it all
+RUN chown -R steam:steam $STEAMAPPDIR
+
 VOLUME $STEAMAPPDIR
 WORKDIR $STEAMAPPDIR
+
 USER steam
 
 ENTRYPOINT $STEAMAPPDIR/dsg-wrapper -i $STEAMAPPDIR/start.sh -s "VAC secure mode"
